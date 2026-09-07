@@ -6,11 +6,18 @@
     font-family:"Comic Neue", cursive;
 }
 
+@font-face {
+    font-family: "Naruto Font";
+    src: url(../resources/fonts/njnaruto.ttf);
+    font-weight: 100;
+}
+
 :root {
     --naruto-orange: #fda500;
     --container-bg: #ede8d8;
     --inner-border-color: #9e2723;
     --outer-border-color: black;
+    --secondary-text-color: #4b4943;;
 }
 
 body {
@@ -20,17 +27,13 @@ body {
 .page-title {
     text-indent: -9999px;
     text-wrap: none;
-
     background-image: url(https://1000marcas.net/wp-content/uploads/2020/10/Naruto-Logo-2048x1161.png);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-
     height: 8rem;
     width: 14rem;
-
     margin: 0 auto;
-
     transition: transform 0.3s ease;
 }
 
@@ -38,15 +41,46 @@ body {
     transform: scale(1.05);
 }
 
-.instruction-div {
-    margin: 0 auto;
-    border-image: url(data:image/png;base64,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);
-
-    border: 1px solid var(--outer-border-color);
-    box-shadow: inset var(--inner-border-color);
-
-
+.border-div {
     width: 25rem;
+    margin: 0 auto;
+    border-style: solid;
+    border-width: 39px 0 0 0;
+    border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYgAAAAnCAYAAAAVft+pAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAZfSURBVHgB7d1fbFNVHAfw373d2q5ru47NiGNd5kRGjCKID7hhKIl7MgKJvJBo1jd90OC/6JMJe9T4YsILvjANCTGBRDSaER6oxqGJiIDGMARdyh8Hdlu3tuufdfd6fndj4Ljt/Y2wluH3k5x03T3t9nR+93d+95yjkdwO1Xartl61EAEAwHITU+1j1b6QdNZIpl21v94Lt1DY6yGfrpft/OGlqxTP5WnKMAgAAJYOj8dtalx+bdVKx7F5aCpLe6+MJDOG8bB6myQH0gCxf3tTY3R78wrHjoMTKfrniQ5659WdFKj3EQAALJ1UZore6vuEVl1NkBqnHfsfGR2nI4kxziLecOqrk7N21aLdDUGS4D/+ykvPIzgAAFQAj7V8Q35sLCmatelpbKB6Xe8lQalAEiCimxsC1Fxb49iRs4euyEZqebCJAACgMjo7Wumxx1dbY7ATnobqaghycLgrGUTvtibnqSXG2cMLPc8QAABUFs/c/JLOiPo+5bdmeHY79XMKEJE2j6ddkj3E83lyrwjS0+seJQAAqCweeycDPqsQ7aTTV0drfXWcRUTK9XMKEL3danpJYnAiTVu7niQAAKiObT2b6JQqWkts8Nfzy45yfeZTg2ikJmKaJqcc84WLg4Mz6+e+xBGnNnuf20QAAFAdG9etoUOfH6VdDzjXgXlsP3g90du7xfWfO3tN0/r6Y8UY/2wFiGjE226Yhf1kWk8sWcbVVFZQqxEVpxPTRWt6qfORVgIAgOrgaaa8202jxSI11ZQfu3lsb66tDaVyMxG/5+bvVaKwPhqhh/tjlLSmmAyj0HtrcGBjaZPCHg9JXFL1BwQHAIDq29q1js4J6hCMaxHXkubCX4cMQ7eecJqtQWgUXdhjLE1cxCCJc1M5FKcBAO4BnR1hiucLor5tHrc11tvYrbKIkP7ys67owuyB8RQTf1iCM4g16p8CAIDqalnZRInCtKgvTzOlc7aXQjMzrh26rtMWu6uFokl1LhdJ8Oq9QL0s2wAAgKWzpmOVddMuwWWE8Yxpe03XzS06FyTsLnJUkRSoGUerlpWyxXQAALB0An4fTc3INkr1uXSVDNhfM02KcA3CNkDwh5x2BrxhNoPA3ksAANXGsznSnbR5jC8VIJSQLAIAAMD/DQIEAADY00mjYbsL7hpaVJqSEi7vBgCApZPKZBdVHnCXLjUP6xppp+2u8Iey0gDhclEqLVuYAQAAS+fqtVFeIS3qm5ieJp/H/tw4TdOGdcMwv7W76PdqFM8JF1t43TR08QoBAEB18c06P50kkTVMKtVVM+hT3eUy+u0uempno4tEU00t/X09QQAAUF3nL16msFe2TVI8l1fJQImLrpmYzhsyqVQitvBasI7Eiy14xfWQ+qcAAKC6Tv56ntbWyRYuD2WzFPDePsWkadSvYsOwPvtGf3Nhh8Z6bVEbPh3/4QwBAEB18c16WLhNEpcRgjaxRNOMPn61AkR/bJoL1X23dqhXGcqEUbS2jXXCK649+SKdPPsHAQBAdQz9eZkKYxPiYxoyWpGCt69x7uPsgX+Y/5bPvjP2qJc9t3Ti03/ePpXK7OxpbCAnfPjEz2fPY1dXAIAq+erYj7Qh4Bf15UPesgVzYOC0+b56e9KuT7lSN28CO7iYQ7C/VP8cAABUx/ETZ6g7KDwmejLFL0dVKzlNVC5A8Cawp1UdIi09BDuYmsI0EwBAFfDYy9NLkmMaeHopnsuPqB+5vJAu1c8pg2CHFnMI9r4DXxMAAFQWTy9tb5btqn1kdIxfBube3lGASM69Hh5MTqYl2250NwTo998u4JFXAIAK4tXTJ2I/iaaXOHsYnJifXmJ3FCB4ionnpjg4DBwbnyAnvP9Hz4oQfbTvEPZmAgCoAB5r9x34Rpw9zNUeOHvgKSYe50sGCM3hu1ar1qqaXw3+B19vfcjfWect+wHONPZeGbFW6Ek3+wMAgDvDN+ZtXg+9G24p24/H40v5An0Qt7ZF2kWzAYLbuVKfcQoQIbp5oNBm1V6kEgcMAQDAPY0zhQuqHVbt+7nfcZE6WeoDTgGCcWCQnT0KAADLBU8vlV2bINnyDxVnAID7z4hTB2mAcN5vAwAAlpO7EiCKki8CAIBl48YTTGVJz6QeJmQRAAD3i2FJJxfJ8POqvLCB13B7CQAAlhu+yZ+k2SeZJiUf+BeXlQmqcAcUiAAAAABJRU5ErkJggg==);
+    border-image-slice: 100% 0 0 0; 
+    border-image-repeat: round;
+    display: flex;
+    justify-content: center;
+}
 
+.instruction-div {
+    border: 2px solid var(--outer-border-color);
+    border-top: 0px;
+    box-shadow: 
+        inset 0px 4px 0px 0px rgba(0, 0, 0, 0.15), 
+        inset 0px 0px 0px 10px var(--inner-border-color);
+    padding: 30px;
     background-color: var(--container-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width:23.7rem;
+    transform:translateY(-7px);
+}
+
+.guess-title {
+    font-family: "Naruto Font";
+    font-size: 1.1rem;
+}
+
+.description-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.data-text {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    font-weight: 700;
 }

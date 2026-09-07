@@ -22,6 +22,11 @@
 
 body {
     width: 100%;
+    background-image: url('https://images2.alphacoders.com/516/thumb-1920-516246.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .page-title {
@@ -83,4 +88,48 @@ body {
     color: var(--secondary-text-color);
     font-size: 0.9rem;
     font-weight: 700;
+}
+
+.input-form {
+    margin: 1rem auto;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 23rem;
+    background-color: var(--container-bg);
+    text-align: center;
+    border: 2px solid var(--outer-border-color);
+    box-shadow: inset 0px 0px 0px 4px var(--inner-border-color);
+    padding: 12px 16px;
+}
+
+.char-input {
+    height: 2.4rem;
+    width: 18rem;
+    padding: 0.4rem;
+    font-size: 1.1rem;
+}
+
+.char-input:focus {
+    outline: none;
+}
+
+.send-btn {
+    border: none;
+    background-color: rgba(0,0,0,0);
+    width: 26px;
+    height: 25px;
+    opacity: 0.8;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.send-btn:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.plane-icon {
+    fill: var(--naruto-orange);
+    width: 24px;
+    height: 24px;
 }

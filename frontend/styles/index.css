@@ -8,16 +8,21 @@
 
 @font-face {
     font-family: "Naruto Font";
-    src: url(../resources/fonts/njnaruto.ttf);
+    src: url(../resources/fonts/njnaruto.ttf) format('truetype');
     font-weight: 100;
 }
 
 :root {
     --naruto-orange: #fda500;
     --container-bg: #ede8d8;
+    --darker-container-bg:#9b988e ;
     --inner-border-color: #9e2723;
     --outer-border-color: black;
     --secondary-text-color: #4b4943;;
+}
+
+.hidden {
+    display: none;
 }
 
 body {
@@ -121,6 +126,7 @@ body {
     height: 25px;
     opacity: 0.8;
     transition: transform 0.1s ease, opacity 0.1s ease;
+    cursor: pointer;
 }
 
 .send-btn:hover {
@@ -132,4 +138,55 @@ body {
     fill: var(--naruto-orange);
     width: 24px;
     height: 24px;
+}
+
+.char-list {
+    margin: 0 auto;
+    width: 23rem;
+    max-height: 10rem;
+    overflow: scroll;
+    border-top: 2px solid var(--inner-border-color);
+    margin-top: -15px;
+}
+
+.char-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.char-list::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.char-list::-webkit-scrollbar-thumb {
+    background-color: transparent;   
+    background-clip: padding-box; 
+}
+
+.char-list::-webkit-scrollbar-track:hover {
+    background-color: gray;
+}
+
+.char-list::-webkit-scrollbar-thumb:hover {
+    background-color: black;
+}
+
+.char-list-element {
+    border: 2px solid var(--inner-border-color);
+    background-color: var(--container-bg);
+    padding: 0.5rem 1rem;
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-start;
+    align-items: center;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.char-list-element:hover {
+    background-color: var(--darker-container-bg);
+}
+
+.char-list-element img {
+    height: 48px;
+    width: 48px;
 }

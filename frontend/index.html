@@ -23,20 +23,20 @@
         </div>
         
         <form class="input-form">
-            <input class="char-input" type="text" placeholder="Type Character Name ....">
-            <button class="send-btn">
+            <input class="char-input" type="text" placeholder="Type Character Name ...." aria-label="Search for a Naruto Character">
+            <button class="send-btn" aria-label="Send your guess">
                 <svg viewBox="0 0 24 24" class="plane-icon">
                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                 </svg>
             </button>
         </form>
 
-        <div class="character-list hidden"></div>
+        <div class="char-list hidden"></div>
     </main>
 <template class="character-block">
-    <div>
+    <div class="char-list-element">
         <img>
-    <p>Character Name</p>
+        <p>Character Name</p>
     </div>
 </template>
 <script src="index.js"></script>

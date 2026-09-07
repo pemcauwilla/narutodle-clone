@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/index.css">
+    <title>Narutodle</title>
+</head>
+<body>
+    <header>
+        <h1 class="page-title">Narutodle</h1>
+    </header>
+    <main>
+        <div class="instruction-div">
+            <h2>Guess today's Naruto character!</h2>
+            <p>Type any character to begin.</p>
+            <p>The data is up to the end of Naruto:Shippūden.</p>
+        </div>
+        
+        <form>
+            <input type="text">
+            <button class="send-button">></button>
+        </form>
+
+        <div class="character-list hidden"></div>
+    </main>
+<template class="character-block">
+    <div>
+        <img>
+    <p>Character Name</p>
+    </div>
+</template>
+<script src="index.js"></script>
+</body>
+</html>

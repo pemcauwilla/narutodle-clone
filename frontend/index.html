@@ -31,12 +31,41 @@
             </button>
         </form>
 
-        <div class="char-list hidden"></div>
+        <div class="char-list hidden">                
+        </div>
+
+        <div class="guesses-container hidden">
+            <header class="guesses-header">
+                <div class="guesses-blur"></div>
+                    <h3>Character</h3>
+                    <h3>Gender</h3>
+                    <h3>Affiliations</h3>
+                    <h3>Jutsu Types</h3>
+                    <h3>Kekkei Genkai</h3>
+                    <h3>Nature Types</h3>
+                    <h3>Atributes</h3>
+                    <h3>Debut arc</h3>
+            </header>
+        </div>
     </main>
 <template class="character-block">
     <div class="char-list-element">
         <img>
         <p>Character Name</p>
+    </div>
+</template>
+
+<template class="guess-template">
+    <div class="guess">
+        <img >
+        <p>Male</p>
+        <p>Konoha</p>
+        <p>Ninjutsu, Genjutsu, Taijutsu</p>
+        <p>None</p>
+        <div class="nature-types">
+        </div>
+        <p>Sage</p>
+        <p id="debut-arc">Fourth Shinobi World War: Climax</p>
     </div>
 </template>
 <script src="index.js"></script>

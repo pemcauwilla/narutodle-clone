@@ -1,0 +1,6 @@
+@narutodleAPI_HostAddress = http://localhost:5256
+
+GET {{narutodleAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

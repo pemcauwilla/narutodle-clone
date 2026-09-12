@@ -10,13 +10,3 @@ public enum Classification
     Mercenary
 }
 
-public static class ClassificationTranslator
-{
-    public static readonly Dictionary<string, Classification> Map = new()
-    {
-        { "Jinchūriki", Classification.Jinchuriki },
-        { "Sage", Classification.Sage },
-        { "Missing-nin", Classification.MissingNin },
-        { "Hunter-nin", Classification.Mercenary }
-    };
-}

@@ -141,19 +141,19 @@ python3 -m http.server 8000
 
 ---
 
-## ⚠️ Known Limitations & Learning Takeaways
+## ⚠️ Current Limitations
 
-Because this project was developed as a learning playground for ASP.NET Core, there are several architectural constraints and areas for future growth:
+A few simple trade-offs made while building this:
 
-- **Startup Seeding & External Dependency**: Seeding currently runs directly on application startup inside `Program.cs`. If the pre-seeded SQLite database is removed, the seeder fetches 100+ pages from the third-party Dattebayo API. Because Render's free tier spins down when idle, initial cold-start seeding may take 30–60 seconds or time out. A production design would use an asynchronous background service (`IHostedService`) or an offline migration script.
-- **Client-Side Session State**: Game guesses and victory states exist solely in browser DOM memory. Reloading the page clears your current guesses. Persisting progress to `localStorage` or managing player sessions on the backend would improve the user experience.
-- **Global UTC Reset vs. Local Time**: Daily ninja selection resets at 00:00 UTC globally. Players in other time zones experience the rollover during the day rather than at their local midnight, and there is currently no visual countdown timer.
-- **Exact-String Matching**: Character queries match via exact case-insensitive strings (`Name.ToLower() == guessedName.ToLower()`). Minor spelling mistakes or special accents (e.g., *Chōji* vs *Choji*) won't match unless selected via the autocomplete dropdown. Implementing Levenshtein distance matching would add typo tolerance.
-- **Automated Testing**: Game comparison logic and parsing rules were manually verified during development; writing an automated xUnit / Moq test suite for `GameService` and `NinjaDataParser` is the planned next step.
+- **Startup Seeding**: If the local SQLite database isn't present, the seeder queries the external Dattebayo API on launch, which can take a minute on first run.
+- **Session State**: Guesses are stored in memory in the browser, so refreshing the page resets the board.
+- **Name Matching**: Guesses need an exact name match from the dropdown list (no fuzzy typo tolerance).
+- **Timezone**: The daily character switches at 00:00 UTC for everyone.
 
 ---
 
-## 📄 License
+## 📄 License & Notes
 
-This project is open-source for personal and educational learning.
-Naruto and all related characters and trademarks belong to Masashi Kishimoto / Shueisha.
+- **License**: MIT License — open-source for personal and educational use.
+- **Disclaimer**: Naruto and all related characters belong to Masashi Kishimoto / Shueisha.
+- **Note**: *This README was created with the assistance of AI.*

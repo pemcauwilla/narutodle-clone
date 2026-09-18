@@ -1,6 +1,6 @@
 # Narutodle 🍥
 
-> A full-stack daily guessing game inspired by Wordle and Loldle, built with **ASP.NET Core (.NET 10)**, **Entity Framework Core**, and modern **Vanilla JavaScript**.
+> A full-stack daily guessing game inspired by Wordle and Loldle, created to explore and learn the core fundamentals of **ASP.NET Core (.NET 10)**, **Entity Framework Core**, and decoupled frontend integration.
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=flat&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![C#](https://img.shields.io/badge/C%23-10-239120?style=flat&logo=c-sharp&logoColor=white)](https://docs.microsoft.com/en-us/dotnet/csharp/)
@@ -10,17 +10,21 @@
 
 ---
 
-## 📌 Overview
+## 📌 Project Purpose & Learning Goals
 
-**Narutodle** is a web-based trivia game where players test their knowledge of the *Naruto* and *Naruto Shippūden* universe. Each day, a single shinobi is selected as the "Daily Ninja." Players submit guesses and receive color-coded feedback across multiple character attributes to deduce the mystery character.
+**Narutodle** was built as a practical, hands-on project to learn the foundations of the **ASP.NET Core** framework and C# backend development. The goal was to step through the complete lifecycle of creating a full-stack application from scratch:
 
-Designed as a portfolio demonstration of full-stack engineering practices, showcasing clean architecture, deterministic backend logic, automated data ETL pipelines, and dependency-free frontend design.
+- **ASP.NET Core Web API**: Routing, controllers, attribute routing, and action results.
+- **Dependency Injection (DI)**: Registering and understanding service lifetimes (`AddScoped` for database-dependent game logic vs. `AddSingleton` for daily target caching).
+- **Entity Framework Core (EF Core)**: Code-first modeling, SQLite integration, schema migrations, and LINQ queries.
+- **Data Ingestion & Normalization**: Building a console scraper tool and seeder to fetch raw anime data from a remote REST API (`dattebayo-api.onrender.com`) and normalize irregular character fields into strongly-typed C# enums.
+- **Cross-Origin Resource Sharing (CORS)**: Configuring secure policies to enable communication between a standalone frontend and the API server.
 
 ---
 
 ## 🎮 Gameplay Mechanics
 
-Players enter character names via a debounced search bar. Upon submitting a guess, the backend evaluates the guess against the daily target across 7 distinct criteria:
+Each day, a single shinobi is selected as the daily mystery character. Players type and select a character from an autocomplete dropdown list. Upon submitting a guess, the backend evaluates it across 7 distinct attributes:
 
 | Attribute | Comparison Mechanism | Feedback States |
 | :--- | :--- | :--- |
@@ -32,55 +36,50 @@ Players enter character names via a debounced search bar. Upon submitting a gues
 | **Classification(s)** | Role / Title Intersection | 🟩 Exact Match / 🟨 Partial Match / 🟥 No Match |
 | **Debut Arc** | Chronological Comparison | 🟩 Correct / ⬆️ Earlier Arc / ⬇️ Later Arc |
 
-Tiles animate sequentially using CSS 3D flip-reveal animations, providing an intuitive, polished user experience.
+Tiles animate sequentially using CSS 3D flip-reveal animations.
 
 ---
 
-## 🏗️ Architecture & Technical Highlights
+## 🏗️ Architecture & How It Works
 
 ```
 narutodle/
 ├── backend/narutodleAPI/        # ASP.NET Core Web API (.NET 10)
 │   ├── controllers/             # REST API Controllers (GameController)
 │   ├── data/                    # AppDbContext & DataBaseSeeder
-│   ├── dtos/                    # Strongly-typed Request/Response DTOs
-│   ├── enums/                   # Rich Domain Enums & metadata
-│   ├── models/                  # Core Entity Models (Ninja)
+│   ├── dtos/                    # Request/Response DTOs (GuessResultDto, MatchStatus)
+│   ├── enums/                   # Strongly-typed Domain Enums
+│   ├── models/                  # Entity Models (Ninja)
 │   ├── services/                # GameService & DailyNinjaService
 │   └── utils/                   # Keyword parsers, JSON helpers, Enum extensions
-├── frontend/                    # Responsive Single-Page Application
-│   ├── assets/                  # Typography & elemental chakra SVG/PNG icons
-│   ├── styles/                  # Anime parchment styling & keyframe animations
+├── frontend/                    # Lightweight Vanilla Client
+│   ├── assets/                  # Naruto font & elemental nature icons
+│   ├── styles/                  # Parchment styling & keyframe animations
 │   ├── index.html               # Semantic HTML with <template> elements
-│   └── index.js                 # Client-side state, debounced search & fetch API
-└── scrape/ScraperTool/          # CLI utility for automated API data extraction
+│   └── index.js                 # Autocomplete search & API fetch handling
+└── scrape/ScraperTool/          # Auxiliary console scraper for API discovery
 ```
 
-### 1. Deterministic Daily Selection (Pseudo-Random Seeding)
-- The daily character is chosen deterministically using a date seed: `(Year * 10000) + (Month * 100) + Day`.
-- All players worldwide receive the identical character each day without requiring background cron jobs, scheduled tasks, or database mutations.
-- Uses an in-memory caching layer (`DailyNinjaService`) to minimize database queries.
+### Key Technical Concepts
 
-### 2. Automated ETL & Data Sanitization Pipeline
-- **Scraper Utility** (`scrape/ScraperTool`): An isolated console tool that extracted, mapped, and audited raw character attributes from the external Dattebayo API.
-- **Automated Seeder** (`DataBaseSeeder`): On initial launch, the application checks the SQLite database, automatically applies EF Core migrations, and ingests character data across paginated API endpoints.
-- **Fuzzy Keyword Parser** (`NinjaDataParser`): Normalizes irregular anime classifications, nature releases, and Japanese transliterations (e.g., macrons like *ō* vs *o*) into strongly-typed C# enums.
+1. **Deterministic Daily Target**:
+   The daily character is calculated algorithmically using the UTC date seed: `(Year * 10000) + (Month * 100) + Day`. Every player receives the same mystery character without needing manual database resets or scheduled cron jobs. `DailyNinjaService` caches this in memory for the rest of the day.
 
-### 3. Chronological Arc Traversal
-- `StoryArc` enums are ordinally mapped according to anime chronology (from *Land of Waves* to *Blank Period*).
-- Allows the comparison engine to return directional feedback (`Earlier` / `Later`), giving players strategic clues.
+2. **Custom Enum Keyword Parser**:
+   Raw anime data from third-party APIs often contains non-standard text (e.g., Japanese macrons like *ō* vs *o*, irregular spellings). `NinjaDataParser` and `EnumKeywordParser` use keyword dictionaries to reliably map strings to typed enums (`Dojutsu`, `Jinchuriki`, `Sage`, etc.).
 
-### 4. Zero-Dependency Client
-- The frontend is engineered with vanilla JavaScript and CSS3—no heavy frameworks or node bundles required.
-- Uses HTML5 `<template>` tags for clean DOM cloning and minimal layout thrashing.
-- Implements client-side debouncing (300ms) to throttle autocomplete queries against the character roster.
+3. **Chronological Arc Comparison**:
+   `StoryArc` enum values are ordered chronologically (from *Land of Waves* to *Blank Period*). The `CompareArcs` method uses ordinal integer values to determine whether the target debuted *earlier* or *later* in the timeline.
+
+4. **Configurable Client Port**:
+   The frontend communicates with the backend via `API_BASE_URL` defined at the top of `frontend/index.js` (pointing to `http://localhost:5256`).
 
 ---
 
 ## 🔌 API Reference
 
 ### `GET /api/game/names`
-Retrieves character names and thumbnail URLs for autocomplete suggestions.
+Retrieves character names and image thumbnails for the autocomplete list.
 
 **Response `200 OK`:**
 ```json
@@ -93,7 +92,7 @@ Retrieves character names and thumbnail URLs for autocomplete suggestions.
 ```
 
 ### `POST /api/game/guess/{guessedName}`
-Submits a guess and evaluates character attributes against the daily mystery ninja.
+Submits a character guess and returns comparison feedback against today's target.
 
 **Response `200 OK`:**
 ```json
@@ -119,42 +118,42 @@ Submits a guess and evaluates character attributes against the daily mystery nin
 
 ### Prerequisites
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download) (or .NET 8.0+)
-- Any modern web browser (Chrome, Firefox, Safari, Edge)
+- Any modern web browser
 
-### Installation & Run
+### 1. Run the Backend API
+The backend is configured in `Properties/launchSettings.json` to listen on **port `5256`** (`http://localhost:5256`).
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/pemcauwilla/narutodle-clone.git
-   cd narutodle-clone
-   ```
+```bash
+cd backend/narutodleAPI
+dotnet run
+```
 
-2. **Run the Backend API:**
-   ```bash
-   cd backend/narutodleAPI
-   dotnet run
-   ```
-   > The API will start on `http://localhost:5256`. On first run, EF Core will automatically apply migrations and seed the database if needed.
+> **Note on Port**: The frontend expects the backend at `http://localhost:5256`. If your system launches on a different port, update the `API_BASE_URL` variable at the top of `frontend/index.js`.
 
-3. **Launch the Frontend:**
-   Open `frontend/index.html` directly in your browser or serve it using any local static file server (e.g. Live Server in VS Code, or `python3 -m http.server`):
-   ```bash
-   cd ../../frontend
-   python3 -m http.server 8000
-   # Open http://localhost:8000 in your browser
-   ```
+### 2. Run the Frontend
+Open `frontend/index.html` directly in your browser or run a simple local static server:
+
+```bash
+cd frontend
+python3 -m http.server 8000
+# Navigate to http://localhost:8000 in your browser
+```
 
 ---
 
-## 🛠️ Built With
+## ⚠️ Known Limitations & Learning Takeaways
 
-- **Backend**: C#, ASP.NET Core Web API, Entity Framework Core, SQLite
-- **Frontend**: Vanilla JavaScript (ES6+), HTML5 Templates, CSS3 Keyframes
-- **Tools**: Git, .NET CLI, REST Client
+Because this project was developed as a learning playground for ASP.NET Core, there are several architectural constraints and areas for future growth:
+
+- **Startup Seeding & External Dependency**: Seeding currently runs directly on application startup inside `Program.cs`. If the pre-seeded SQLite database is removed, the seeder fetches 100+ pages from the third-party Dattebayo API. Because Render's free tier spins down when idle, initial cold-start seeding may take 30–60 seconds or time out. A production design would use an asynchronous background service (`IHostedService`) or an offline migration script.
+- **Client-Side Session State**: Game guesses and victory states exist solely in browser DOM memory. Reloading the page clears your current guesses. Persisting progress to `localStorage` or managing player sessions on the backend would improve the user experience.
+- **Global UTC Reset vs. Local Time**: Daily ninja selection resets at 00:00 UTC globally. Players in other time zones experience the rollover during the day rather than at their local midnight, and there is currently no visual countdown timer.
+- **Exact-String Matching**: Character queries match via exact case-insensitive strings (`Name.ToLower() == guessedName.ToLower()`). Minor spelling mistakes or special accents (e.g., *Chōji* vs *Choji*) won't match unless selected via the autocomplete dropdown. Implementing Levenshtein distance matching would add typo tolerance.
+- **Automated Testing**: Game comparison logic and parsing rules were manually verified during development; writing an automated xUnit / Moq test suite for `GameService` and `NinjaDataParser` is the planned next step.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) — free for educational and personal use.
-Naruto and all associated characters are trademarks and copyright of Masashi Kishimoto / Shueisha.
+This project is open-source for personal and educational learning.
+Naruto and all related characters and trademarks belong to Masashi Kishimoto / Shueisha.

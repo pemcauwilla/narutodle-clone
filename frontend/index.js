@@ -1,3 +1,5 @@
+const API_BASE_URL = 'http://localhost:5256';
+
 const input = document.querySelector('.char-input');
 const form = document.querySelector('.input-form');
 const charListDiv = document.querySelector('.char-list');
@@ -9,7 +11,7 @@ let allNinjaNames = [];
 
 async function loadNames() {
     try {
-        const response = await fetch('http://localhost:5256/api/game/names'); 
+        const response = await fetch(`${API_BASE_URL}/api/game/names`); 
         allNinjaNames = await response.json();
     } catch (error) {
         console.error("Failed to load names:", error);
@@ -76,7 +78,7 @@ form.addEventListener('submit', (e) => {
 
 async function submitGuess(name) {
     try {
-        const response = await fetch(`http://localhost:5256/api/game/guess/${name}`, {
+        const response = await fetch(`${API_BASE_URL}/api/game/guess/${encodeURIComponent(name)}`, {
             method: 'POST'
         });
 
